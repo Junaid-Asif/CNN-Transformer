@@ -1,0 +1,18 @@
+torch>=2.1.0
+torchvision>=0.16.0
+torcheval>=0.0.11
+numpy
+pandas
+scikit-learn
+opencv-python
+Pillow
+PyYAML
+tqdm
+matplotlib
+seaborn
+
+pip install torch torchvision torcheval
+pip install numpy pandas scikit-learn
+pip install opencv-python Pillow tqdm
+pip install matplotlib seaborn
+pip install PyYAML

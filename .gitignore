@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.env
+
+# Data
+data/raw/
+data/processed/
+outputs/checkpoints/
+outputs/logs/
+outputs/metrics/
+outputs/gradcam/
+
+# OS
+.DS_Store
+Thumbs.db
