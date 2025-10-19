@@ -4,7 +4,7 @@ import yaml
 import torch
 import numpy as np
 
-def load_config(path="configs/default_config.yaml"):
+def load_config(path="C:\\Users\\User\\OneDrive\\Documents\\Tranformers_health_index\\configs\\default_config.yaml"):
     with open(path, "r") as f:
         return yaml.safe_load(f)
 

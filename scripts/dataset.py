@@ -10,6 +10,14 @@ class TransformerHealthDataset(Dataset):
         self.image_col = image_col
         self.target_col = target_col
 
+    def __getitem__(self, idx):
+        row = self.df.iloc[idx]
+        img = Image.open(row[self.image_col]).convert("RGB")
+        if self.transform:
+            img = self.transform(img)
+        target = float(row[self.target_col]) / 100.0
+        return img, target
+
     def __len__(self):
         return len(self.df)
 

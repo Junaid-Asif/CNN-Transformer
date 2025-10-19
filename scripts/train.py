@@ -1,16 +1,19 @@
+import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# above three are ffor running this train.py script from inside dir like /scripts> python train.py otherwise models is not known for this file
 import math
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from sklearn.metrics import mean_absolute_error
-from scripts.dataset import TransformerHealthDataset
-from scripts.augment import build_transforms
-from scripts.utils import load_config, set_seed, get_device, save_checkpoint
-from scripts.models.custom_cnn import CustomCNN
-from scripts.models.resnet import build_resnet
-from scripts.models.efficientnet import build_efficientnet
+from dataset import TransformerHealthDataset
+from augment import build_transforms
+from utils import load_config, set_seed, get_device, save_checkpoint
+from models.custom_cnn import CustomCNN
+from models.resnet import build_resnet
+from models.efficientnet import build_efficientnet
 
 # Train a model for regression to health index (scaled 0-1)
 def build_model(cfg):
@@ -118,13 +121,14 @@ def main(config_path="configs/default_config.yaml"):
         augment_cfg=cfg.get("augment", {})
     )
     train_ds = TransformerHealthDataset(
-        os.path.join(cfg["data_dir"], cfg["train_csv"]), transform=train_t
+    os.path.join(cfg["processed_dir"], cfg["train_csv"]), transform=train_t
     )
     val_ds = TransformerHealthDataset(
-        os.path.join(cfg["data_dir"], cfg["val_csv"]), transform=val_t
+    os.path.join(cfg["processed_dir"], cfg["val_csv"]), transform=val_t
     )
-    train_loader = DataLoader(train_ds, batch_size=cfg["batch_size"], shuffle=True, num_workers=4, pin_memory=True)
-    val_loader = DataLoader(val_ds, batch_size=cfg["batch_size"], shuffle=False, num_workers=4, pin_memory=True)
+    pin_memory = True if device.type == "cuda" else False
+    train_loader = DataLoader(train_ds, batch_size=cfg["batch_size"], shuffle=True, num_workers=4, pin_memory=pin_memory)
+    val_loader = DataLoader(val_ds, batch_size=cfg["batch_size"], shuffle=False, num_workers=4, pin_memory=pin_memory)
 
     # Model
     model = build_model(cfg).to(device)

@@ -8,9 +8,9 @@ from tqdm import tqdm
 from scripts.dataset import TransformerHealthDataset
 from scripts.augment import build_transforms
 from scripts.utils import load_config, get_device
-from scripts.models.custom_cnn import CustomCNN
-from scripts.models.resnet import build_resnet
-from scripts.models.efficientnet import build_efficientnet
+from models.custom_cnn import CustomCNN
+from models.resnet import build_resnet
+from models.efficientnet import build_efficientnet
 
 # Load model weights and evaluate on test set
 def load_model(cfg, ckpt_path):
@@ -35,7 +35,8 @@ def load_model(cfg, ckpt_path):
 def evaluate_test(cfg, ckpt_path):
     device = get_device()
     _, _, test_t = build_transforms(cfg["image_size"], cfg["normalize_mean"], cfg["normalize_std"], cfg.get("augment", {}))
-    test_ds = TransformerHealthDataset(os.path.join(cfg["data_dir"], cfg["test_csv"]), transform=test_t)
+    test_ds = TransformerHealthDataset(os.path.join(cfg["processed_dir"], cfg["train_csv"])
+), transform=test_t)
     test_loader = DataLoader(test_ds, batch_size=cfg["batch_size"], shuffle=False, num_workers=4)
 
     model = load_model(cfg, ckpt_path).to(device)

@@ -5,9 +5,9 @@ from PIL import Image
 import numpy as np
 import cv2
 from scripts.utils import load_config, get_device
-from scripts.models.custom_cnn import CustomCNN
-from scripts.models.resnet import build_resnet
-from scripts.models.efficientnet import build_efficientnet
+from models.custom_cnn import CustomCNN
+from models.resnet import build_resnet
+from models.efficientnet import build_efficientnet
 
 # Simple Grad-CAM implementation focusing on last conv feature map layer
 class GradCAM:
@@ -89,7 +89,7 @@ def main():
     ])
 
     # Choose an image (change path as needed)
-    test_csv = os.path.join(cfg["data_dir"], cfg["test_csv"])
+    test_csv = os.path.join(cfg["processed_dir"], cfg["train_csv"])
     import pandas as pd
     df = pd.read_csv(test_csv)
     img_path = df.iloc[0]["image_path"]
