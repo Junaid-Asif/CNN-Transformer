@@ -1,12 +1,7 @@
 import torchvision.transforms as T
+from config import IMAGE_SIZE, NORMALIZE_MEAN, NORMALIZE_STD, AUGMENT
 
-def build_transforms(image_size=224, mean=None, std=None, augment_cfg=None):
-    if mean is None:
-        mean = [0.485, 0.456, 0.406]
-    if std is None:
-        std = [0.229, 0.224, 0.225]
-    augment_cfg = augment_cfg or {}
-
+def build_transforms(image_size=IMAGE_SIZE, mean=NORMALIZE_MEAN, std=NORMALIZE_STD, augment_cfg=AUGMENT):
     train_transforms = [T.Resize((image_size, image_size))]
 
     if augment_cfg.get("jitter", False):
